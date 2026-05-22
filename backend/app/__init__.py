@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+import os
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -20,7 +21,11 @@ def create_app(config_name="development"):
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+    # CORS — restrict origins in production via CORS_ORIGINS env var
+    cors_origins = os.environ.get("CORS_ORIGINS", "*")
+    origins_list = [o.strip() for o in cors_origins.split(",")] if cors_origins != "*" else "*"
+    CORS(app, resources={r"/api/*": {"origins": origins_list}})
 
     # Register blueprints
     from app.api.auth import auth_bp

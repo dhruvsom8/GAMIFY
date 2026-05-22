@@ -5,9 +5,9 @@ services:
     image: postgres:16-alpine
     container_name: gamify_db
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: gamify_dev
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      POSTGRES_DB: ${POSTGRES_DB:-gamify_dev}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -24,10 +24,12 @@ services:
       dockerfile: Dockerfile
     container_name: gamify_backend
     environment:
-      FLASK_ENV: development
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/gamify_dev
-      SECRET_KEY: change-me-in-production
-      JWT_SECRET_KEY: change-jwt-in-production
+      FLASK_ENV: ${FLASK_ENV:-development}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-gamify_dev}
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY must be set}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-2}
     ports:
       - "5000:5000"
     depends_on:
