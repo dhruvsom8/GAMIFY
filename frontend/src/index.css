@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Global pixel RPG styles ── */
+* {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+body {
+  background-color: #0a0a0f;
+  color: #e5e7eb;
+  font-family: 'Press Start 2P', monospace;
+  overflow-x: hidden;
+}
+
+/* Pixel scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #12121a; }
+::-webkit-scrollbar-thumb { background: #2a2a3a; border: 2px solid #0a0a0f; }
+::-webkit-scrollbar-thumb:hover { background: #4ade80; }
+
+/* CRT scanline overlay */
+.crt-overlay::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Pixel border utility */
+.pixel-border {
+  border: 3px solid #2a2a3a;
+  box-shadow: 4px 4px 0px #000;
+}
+
+.pixel-border-green {
+  border: 3px solid #4ade80;
+  box-shadow: 4px 4px 0px #16a34a;
+}
+
+.pixel-border-blue {
+  border: 3px solid #60a5fa;
+  box-shadow: 4px 4px 0px #1d4ed8;
+}
+
+.pixel-border-yellow {
+  border: 3px solid #fbbf24;
+  box-shadow: 4px 4px 0px #d97706;
+}
+
+.pixel-border-red {
+  border: 3px solid #f87171;
+  box-shadow: 4px 4px 0px #dc2626;
+}
+
+/* Pixel panel */
+.pixel-panel {
+  background: #12121a;
+  border: 3px solid #2a2a3a;
+  box-shadow: 4px 4px 0px #000, inset 0 0 0 1px #1a1a2a;
+}
+
+/* Pixel button base */
+.pixel-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  padding: 10px 16px;
+  border: 3px solid;
+  cursor: pointer;
+  transition: none;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none !important;
+}
+
+.pixel-btn-green {
+  background: #16a34a;
+  color: #fff;
+  border-color: #4ade80;
+  box-shadow: 4px 4px 0px #052e16;
+}
+.pixel-btn-green:hover { background: #4ade80; color: #000; }
+
+.pixel-btn-blue {
+  background: #1d4ed8;
+  color: #fff;
+  border-color: #60a5fa;
+  box-shadow: 4px 4px 0px #1e3a8a;
+}
+.pixel-btn-blue:hover { background: #60a5fa; color: #000; }
+
+.pixel-btn-red {
+  background: #dc2626;
+  color: #fff;
+  border-color: #f87171;
+  box-shadow: 4px 4px 0px #7f1d1d;
+}
+.pixel-btn-red:hover { background: #f87171; color: #000; }
+
+.pixel-btn-yellow {
+  background: #d97706;
+  color: #000;
+  border-color: #fbbf24;
+  box-shadow: 4px 4px 0px #78350f;
+}
+.pixel-btn-yellow:hover { background: #fbbf24; }
+
+.pixel-btn-ghost {
+  background: transparent;
+  color: #9ca3af;
+  border-color: #2a2a3a;
+  box-shadow: 4px 4px 0px #000;
+}
+.pixel-btn-ghost:hover { color: #e5e7eb; border-color: #4a4a5a; }
+
+/* XP bar */
+.xp-bar-track {
+  background: #1a1a2a;
+  border: 2px solid #2a2a3a;
+  height: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+  transition: width 0.8s steps(20);
+  position: relative;
+}
+
+.xp-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 4px;
+  right: 4px; height: 3px;
+  background: rgba(255,255,255,0.3);
+}
+
+/* Pixel input */
+.pixel-input {
+  background: #0a0a0f;
+  border: 3px solid #2a2a3a;
+  color: #e5e7eb;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  padding: 10px 12px;
+  outline: none;
+  width: 100%;
+}
+
+.pixel-input:focus {
+  border-color: #4ade80;
+  box-shadow: 0 0 8px #4ade8044;
+}
+
+/* Difficulty badges */
+.diff-easy   { color: #4ade80; border-color: #4ade80; }
+.diff-normal { color: #60a5fa; border-color: #60a5fa; }
+.diff-hard   { color: #fbbf24; border-color: #fbbf24; }
+.diff-boss   { color: #f87171; border-color: #f87171; }
+
+/* Rarity colors */
+.rarity-common    { color: #9ca3af; }
+.rarity-rare      { color: #60a5fa; }
+.rarity-epic      { color: #a78bfa; }
+.rarity-legendary { color: #f59e0b; text-shadow: 0 0 8px #f59e0b; }
+
+/* Pixel text glow */
+.text-glow-green  { text-shadow: 0 0 8px #4ade80; }
+.text-glow-blue   { text-shadow: 0 0 8px #60a5fa; }
+.text-glow-yellow { text-shadow: 0 0 8px #fbbf24; }
+.text-glow-red    { text-shadow: 0 0 8px #f87171; }
+
+/* Selection */
+::selection { background: #4ade8044; color: #4ade80; }
