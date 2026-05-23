@@ -131,8 +131,8 @@ def delete_quest(quest_id):
 def complete_quest_route(quest_id):
     user_id = int(get_jwt_identity())
     quest = _get_user_quest(quest_id, user_id)
-    skill = Skill.query.get_or_404(quest.skill_id)
-    user = User.query.get_or_404(user_id)
+    skill = db.get_or_404(Skill, quest.skill_id)
+    user = db.get_or_404(User, user_id)
 
     result = complete_quest(user, skill, quest)
     if "error" in result:
@@ -146,8 +146,8 @@ def complete_quest_route(quest_id):
 def fail_quest_route(quest_id):
     user_id = int(get_jwt_identity())
     quest = _get_user_quest(quest_id, user_id)
-    skill = Skill.query.get_or_404(quest.skill_id)
-    user = User.query.get_or_404(user_id)
+    skill = db.get_or_404(Skill, quest.skill_id)
+    user = db.get_or_404(User, user_id)
 
     result = fail_quest(user, skill, quest)
     if "error" in result:

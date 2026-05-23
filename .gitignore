@@ -1,0 +1,46 @@
+# ── Python ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ─────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ── Environment variables — NEVER commit these ───────────────
+.env
+.env.local
+.env.*.local
+backend/.env
+
+# ── SQLite database files ────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# ── Flask-Migrate / Alembic ──────────────────────────────────
+# Keep migrations/ tracked — do NOT gitignore it
+
+# ── Node / Frontend ──────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# ── OS ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── IDE ──────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp

@@ -70,7 +70,7 @@ def refresh():
 @jwt_required()
 def me():
     user_id = int(get_jwt_identity())
-    user = User.query.get_or_404(user_id)
+    user = db.get_or_404(User, user_id)
     return jsonify({"user": user.to_dict()}), 200
 
 
@@ -78,7 +78,7 @@ def me():
 @jwt_required()
 def update_profile():
     user_id = int(get_jwt_identity())
-    user = User.query.get_or_404(user_id)
+    user = db.get_or_404(User, user_id)
     data = request.get_json()
 
     allowed = ["username", "bio", "avatar", "theme", "streak_penalty_enabled"]

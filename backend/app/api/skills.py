@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from sqlalchemy import desc
 from app import db
 from app.models.skill import Skill
+from app.models.xp_log import XPLog
 from app.utils.validators import validate_required_fields
 from app.utils.pagination import paginate_query
 
@@ -79,5 +81,5 @@ def get_skill_xp_logs(skill_id):
     skill = Skill.query.filter_by(id=skill_id, user_id=user_id).first_or_404()
     page = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 20, type=int)
-    result = paginate_query(skill.xp_logs.order_by(db.text("created_at DESC")), page, per_page)
+    result = paginate_query(skill.xp_logs.order_by(desc(XPLog.created_at)), page, per_page)
     return jsonify(result), 200
