@@ -4,14 +4,14 @@
 
 The following issues were preventing successful Vercel deployment:
 
-1. **Missing vercel.json** - Vercel didn't know to build from the `frontend/` directory
+1. **Missing Vercel project settings** - Vercel didn't know to build from the `frontend/` directory
 2. **No Node version specification** - Vercel needs `.nvmrc` to use the correct Node version
-3. **Build configuration** - Vercel needed explicit build command and output directory
+3. **Build configuration** - Vercel needed explicit build command and output directory configured in project settings
 4. **Environment variables** - VITE_API_URL needs to be set in Vercel dashboard
 
 ## Files Created
 
-- `vercel.json` - Configures Vercel to build from frontend directory using the `root` property
+- `vercel.json` - Contains only rewrite rules for client-side routing
 - `.nvmrc` - Specifies Node.js version 22 (LTS)
 - `frontend/.npmrc` - Configures npm with timeout and retry settings for reliable Vercel builds
 
@@ -41,12 +41,20 @@ git commit -m "Add Vercel deployment configuration"
 git push
 ```
 
-### 2. Configure Vercel Project
+### 2. Configure Vercel Project Settings
 
 If you haven't already:
 1. Go to [vercel.com](https://vercel.com)
 2. Import your GitHub repository
-3. Vercel will automatically detect the `vercel.json` configuration
+3. **Important**: Configure the following in your Vercel project settings:
+
+   **Go to Settings > General > Build & Development Settings:**
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+
+   These settings override any vercel.json configuration and are more reliable for monorepo deployments.
 
 ### 3. Set Environment Variables
 
@@ -64,15 +72,21 @@ After setting environment variables:
 
 ## Build Configuration Details
 
-The `vercel.json` file configures:
+### Vercel Project Settings (Required)
+Configure these in **Settings > General > Build & Development Settings**:
 
 - **Root Directory**: `frontend` - Tells Vercel to build from the frontend subdirectory
 - **Build Command**: `npm run build` - Runs Vite build (executed from frontend directory)
 - **Output Directory**: `dist` - Relative to the root directory (i.e., `frontend/dist`)
 - **Install Command**: `npm install` - Installs dependencies (executed from frontend directory)
-- **Framework**: Vite
+
+### vercel.json (Optional)
+The `vercel.json` file only contains:
+
 - **Rewrites**: 
   - All routes serve `index.html` (for client-side routing with React Router)
+
+**Note**: Vercel project settings override vercel.json configuration. Using project settings is more reliable for monorepo deployments.
 
 ## API Configuration
 
@@ -89,6 +103,12 @@ No server-side rewrite rules are needed for API requests.
 
 If you see errors during the `npm install` phase:
 
+- **"cd frontend && npm install" error**: This indicates Vercel is using old configuration. Fix by:
+  1. Go to **Settings > General > Build & Development Settings**
+  2. Set **Root Directory** to `frontend`
+  3. Set **Install Command** to `npm install` (no `cd frontend &&`)
+  4. Save changes and redeploy
+
 - **Node version mismatch**: The `.nvmrc` file now specifies Node 22 LTS. Ensure Vercel is using this version.
 - **Lockfile conflicts**: If you've recently updated dependencies, regenerate the lockfile:
   ```bash
@@ -102,8 +122,9 @@ If you see errors during the `npm install` phase:
 - **Registry issues**: Ensure you're using the public npm registry (the `.npmrc` file doesn't override the default registry)
 
 ### Build Fails with "Cannot find module"
-- Ensure `installCommand` is correct in `vercel.json`
+- Ensure **Install Command** is set to `npm install` in Vercel project settings
 - Check that all dependencies are in `frontend/package.json`
+- Verify **Root Directory** is set to `frontend` in Vercel project settings
 
 ### API Requests Fail in Production
 - Verify `VITE_API_URL` is set in Vercel environment variables
