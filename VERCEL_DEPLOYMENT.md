@@ -11,8 +11,9 @@ The following issues were preventing successful Vercel deployment:
 
 ## Files Created
 
-- `vercel.json` - Configures Vercel to build from frontend directory
-- `.nvmrc` - Specifies Node.js version 20 (LTS)
+- `vercel.json` - Configures Vercel to build from frontend directory using the `root` property
+- `.nvmrc` - Specifies Node.js version 22 (LTS)
+- `frontend/.npmrc` - Configures npm with timeout and retry settings for reliable Vercel builds
 
 ## Environment Variables Required
 
@@ -35,7 +36,7 @@ VITE_APP_VERSION=1.0.0
 
 ### 1. Push Changes to Git
 ```bash
-git add vercel.json .nvmrc VERCEL_DEPLOYMENT.md
+git add vercel.json .nvmrc frontend/.npmrc VERCEL_DEPLOYMENT.md
 git commit -m "Add Vercel deployment configuration"
 git push
 ```
@@ -65,9 +66,10 @@ After setting environment variables:
 
 The `vercel.json` file configures:
 
-- **Build Command**: `cd frontend && npm run build`
-- **Output Directory**: `frontend/dist`
-- **Install Command**: `cd frontend && npm install`
+- **Root Directory**: `frontend` - Tells Vercel to build from the frontend subdirectory
+- **Build Command**: `npm run build` - Runs Vite build (executed from frontend directory)
+- **Output Directory**: `dist` - Relative to the root directory (i.e., `frontend/dist`)
+- **Install Command**: `npm install` - Installs dependencies (executed from frontend directory)
 - **Framework**: Vite
 - **Rewrites**: 
   - All routes serve `index.html` (for client-side routing with React Router)
@@ -82,6 +84,22 @@ API requests are handled client-side using the `VITE_API_URL` environment variab
 No server-side rewrite rules are needed for API requests.
 
 ## Troubleshooting
+
+### npm Install Fails During Deployment
+
+If you see errors during the `npm install` phase:
+
+- **Node version mismatch**: The `.nvmrc` file now specifies Node 22 LTS. Ensure Vercel is using this version.
+- **Lockfile conflicts**: If you've recently updated dependencies, regenerate the lockfile:
+  ```bash
+  cd frontend
+  rm package-lock.json
+  npm install
+  git add package-lock.json
+  git commit -m "Regenerate package-lock.json"
+  ```
+- **Network timeouts**: The `.npmrc` file includes timeout and retry settings to handle slow npm downloads. If issues persist, increase the values in `frontend/.npmrc`.
+- **Registry issues**: Ensure you're using the public npm registry (the `.npmrc` file doesn't override the default registry)
 
 ### Build Fails with "Cannot find module"
 - Ensure `installCommand` is correct in `vercel.json`
