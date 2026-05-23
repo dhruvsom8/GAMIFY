@@ -1,1 +1,1 @@
-web: python -m flask db upgrade && python -m flask seed-achievements && gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 60 run:app
+web: FLASK_ENV=production python -m flask db upgrade && FLASK_ENV=production python -m flask seed-achievements && gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 60 run:app

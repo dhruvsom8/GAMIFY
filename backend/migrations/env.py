@@ -94,9 +94,11 @@ def run_migrations_online():
     if conf_args.get("process_revision_directives") is None:
         conf_args["process_revision_directives"] = process_revision_directives
 
-    # render_as_batch=True is required for SQLite ALTER TABLE support
-    # (SQLite doesn't support ADD/DROP COLUMN natively — batch mode rewrites the table)
-    conf_args.setdefault("render_as_batch", True)
+    # render_as_batch is only needed for SQLite (which can't ALTER TABLE natively).
+    # For PostgreSQL (Supabase/Render/Railway) it must be False/absent.
+    db_url = get_engine_url()
+    is_sqlite = db_url.startswith("sqlite")
+    conf_args.setdefault("render_as_batch", is_sqlite)
 
     connectable = get_engine()
 
