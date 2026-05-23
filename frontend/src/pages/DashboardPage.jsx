@@ -45,12 +45,12 @@ export default function DashboardPage() {
       {/* Player status panel */}
       <PixelPanel title="PLAYER STATUS" color="green" animate>
         <div className="p-4">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 border-4 border-rpg-green flex items-center justify-center text-4xl bg-rpg-bg">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 border-4 border-rpg-green flex items-center justify-center text-3xl sm:text-4xl bg-rpg-bg shrink-0">
               {user?.avatar === 'mage' ? '🧝' : user?.avatar === 'rogue' ? '🥷' : user?.avatar === 'paladin' ? '⚔️' : '🧙'}
             </div>
-            <div>
-              <div className="font-pixel text-rpg-white text-sm mb-1">{user?.username}</div>
+            <div className="text-center sm:text-left">
+              <div className="font-pixel text-rpg-white text-xs sm:text-sm mb-1">{user?.username}</div>
               <div className="font-pixel text-[8px] text-rpg-gray mb-2">{user?.title}</div>
               <div className="font-pixel text-[8px] text-rpg-yellow">
                 TOTAL XP: {user?.total_xp?.toLocaleString()}
@@ -150,24 +150,24 @@ export default function DashboardPage() {
 function StatCard({ label, value, color, icon }) {
   return (
     <motion.div
-      className="pixel-panel p-4 text-center"
+      className="pixel-panel p-3 sm:p-4 text-center"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
     >
-      <div className="text-2xl mb-2">{icon}</div>
-      <div className={`font-pixel text-sm ${color} mb-1`}>{value}</div>
-      <div className="font-pixel text-[7px] text-rpg-gray">{label}</div>
+      <div className="text-xl sm:text-2xl mb-2">{icon}</div>
+      <div className={`font-pixel text-xs sm:text-sm ${color} mb-1`}>{value}</div>
+      <div className="font-pixel text-[6px] sm:text-[7px] text-rpg-gray">{label}</div>
     </motion.div>
   )
 }
 
 function MiniSkillCard({ skill }) {
   return (
-    <div className="bg-rpg-bg border-2 border-rpg-border p-3">
+    <div className="bg-rpg-bg border-2 border-rpg-border p-2 sm:p-3">
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-lg">{skill.icon === 'sword' ? '⚔️' : '📖'}</span>
-        <div>
-          <div className="font-pixel text-[8px] text-rpg-white">{skill.name}</div>
+        <span className="text-base sm:text-lg">{skill.icon === 'sword' ? '⚔️' : '📖'}</span>
+        <div className="min-w-0">
+          <div className="font-pixel text-[8px] text-rpg-white truncate">{skill.name}</div>
           <div className="font-pixel text-[6px] text-rpg-gray">LV.{skill.current_level}</div>
         </div>
       </div>
@@ -199,12 +199,12 @@ function HeatmapGrid({ heatmap }) {
   }
 
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex flex-wrap gap-1 justify-center">
       {days.map(({ key, count }) => (
         <div
           key={key}
           title={`${key}: ${count} quests`}
-          className="w-3 h-3 border border-black"
+          className="w-3 h-3 sm:w-3.5 sm:h-3.5 border border-black flex-shrink-0"
           style={{ background: getColor(count), imageRendering: 'pixelated' }}
         />
       ))}

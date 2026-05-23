@@ -13,11 +13,15 @@ const NAV_ITEMS = [
   { to: '/profile',   icon: 'user',     label: 'PROFILE' },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ onCloseMobile }) {
   const { user, logout } = useAuthStore()
 
   const { xpInLevel } = user ? calculateLevelFromTotalXP(user.total_xp) : { xpInLevel: 0 }
   const nextLevelXP = user ? xpForNextLevel(user.global_level) : 100
+
+  const handleNavClick = () => {
+    if (onCloseMobile) onCloseMobile()
+  }
 
   return (
     <aside className="w-56 min-h-screen bg-rpg-panel border-r-4 border-rpg-border flex flex-col shrink-0">
@@ -63,6 +67,7 @@ export default function Sidebar() {
           <NavLink
             key={item.to}
             to={item.to}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-3 mb-1 font-pixel text-[8px] border-2 transition-none ${
                 isActive
@@ -85,7 +90,10 @@ export default function Sidebar() {
       {/* Logout */}
       <div className="p-3 border-t-2 border-rpg-border">
         <button
-          onClick={logout}
+          onClick={() => {
+            logout()
+            if (onCloseMobile) onCloseMobile()
+          }}
           className="w-full font-pixel text-[8px] text-rpg-gray hover:text-rpg-red px-3 py-2 border-2 border-transparent hover:border-rpg-red transition-none"
         >
           ⏻ LOGOUT

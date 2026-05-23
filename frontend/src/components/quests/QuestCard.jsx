@@ -171,10 +171,10 @@ export default function QuestCard({ quest, onEdit, onDelete, skillName }) {
             {/* Actions */}
             {isPending && (
               <div className="flex flex-col gap-1 shrink-0">
-                <PixelButton variant="green" size="sm" onClick={handleComplete} loading={loading}>
+                <PixelButton variant="green" size="sm" onClick={handleComplete} loading={loading} className="min-h-[40px]">
                   ✓
                 </PixelButton>
-                <PixelButton variant="red" size="sm" onClick={handleFail} loading={loading}>
+                <PixelButton variant="red" size="sm" onClick={handleFail} loading={loading} className="min-h-[40px]">
                   ✗
                 </PixelButton>
               </div>

@@ -44,22 +44,22 @@ export default function ProfilePage() {
   const { xpInLevel } = user ? calculateLevelFromTotalXP(user.total_xp) : { xpInLevel: 0 }
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6 max-w-2xl mx-auto px-2">
       <div className="font-pixel text-rpg-blue text-glow-blue text-sm">👤 PLAYER PROFILE</div>
 
       {/* Character card */}
       <PixelPanel title="CHARACTER STATS" color="blue" animate>
-        <div className="p-6">
-          <div className="flex items-center gap-6 mb-6">
+        <div className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6">
             <motion.div
-              className="w-20 h-20 border-4 border-rpg-blue flex items-center justify-center text-5xl bg-rpg-bg"
+              className="w-16 h-16 sm:w-20 sm:h-20 border-4 border-rpg-blue flex items-center justify-center text-4xl sm:text-5xl bg-rpg-bg"
               animate={{ y: [0, -4, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             >
               {AVATAR_ICONS[user?.avatar] || '🧙'}
             </motion.div>
-            <div>
-              <div className="font-pixel text-rpg-white text-sm mb-1">{user?.username}</div>
+            <div className="text-center sm:text-left">
+              <div className="font-pixel text-rpg-white text-xs sm:text-sm mb-1">{user?.username}</div>
               <div className="font-pixel text-[8px] text-rpg-gray mb-2">{user?.title}</div>
               <div className="font-pixel text-[8px] text-rpg-yellow">
                 GLOBAL LEVEL {user?.global_level}

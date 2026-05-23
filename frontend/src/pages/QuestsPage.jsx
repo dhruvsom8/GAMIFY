@@ -136,7 +136,7 @@ export default function QuestsPage() {
             className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-4 overflow-y-auto"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           >
-            <motion.div className="w-full max-w-md my-4" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }}>
+            <motion.div className="w-full max-w-md my-4 mx-auto" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }}>
               <PixelPanel title={editingQuest ? 'EDIT QUEST' : 'NEW QUEST'} color="blue">
                 <form onSubmit={handleSubmit} className="p-4 space-y-3">
                   <PixelInput label="QUEST TITLE" value={form.title} onChange={set('title')} placeholder="e.g. Write 3 headlines" required />
