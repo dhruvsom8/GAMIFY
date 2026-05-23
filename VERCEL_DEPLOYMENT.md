@@ -14,6 +14,8 @@ The following issues were preventing successful Vercel deployment:
 - `vercel.json` - Contains only rewrite rules for client-side routing
 - `.nvmrc` - Specifies Node.js version 22 (LTS)
 - `frontend/.npmrc` - Configures npm with timeout and retry settings for reliable Vercel builds
+- `frontend/.env.production` - Provides fallback for VITE_API_URL during build
+- `frontend/src/lib/api.js` - Fixed refresh token endpoint to use configured BASE_URL
 
 ## Environment Variables Required
 
@@ -36,8 +38,8 @@ VITE_APP_VERSION=1.0.0
 
 ### 1. Push Changes to Git
 ```bash
-git add vercel.json .nvmrc frontend/.npmrc VERCEL_DEPLOYMENT.md
-git commit -m "Add Vercel deployment configuration"
+git add vercel.json .nvmrc frontend/.npmrc frontend/.env.production VERCEL_DEPLOYMENT.md frontend/src/lib/api.js
+git commit -m "Fix Vercel build configuration and API endpoint"
 git push
 ```
 
@@ -95,6 +97,8 @@ API requests are handled client-side using the `VITE_API_URL` environment variab
 - `/api` (relative path) in development (proxied by Vite dev server)
 - `VITE_API_URL/api` in production (set via environment variable)
 
+**Important**: The refresh token endpoint has been fixed to use the configured BASE_URL instead of a hardcoded path, ensuring it works correctly in production.
+
 No server-side rewrite rules are needed for API requests.
 
 ## Troubleshooting
@@ -125,6 +129,18 @@ If you see errors during the `npm install` phase:
 - Ensure **Install Command** is set to `npm install` in Vercel project settings
 - Check that all dependencies are in `frontend/package.json`
 - Verify **Root Directory** is set to `frontend` in Vercel project settings
+
+### Build Fails During `npm run build`
+
+If the build fails during the build phase:
+
+- **Missing environment variables**: The `.env.production` file provides a fallback for `VITE_API_URL`. Ensure it's committed to git.
+- **Node version mismatch**: Verify `.nvmrc` specifies Node 22 and Vercel is using this version
+- **Build output directory mismatch**: Ensure **Output Directory** is set to `dist` in Vercel project settings
+- **Memory issues**: Vercel builds have memory limits. If you see "out of memory" errors, try:
+  - Reducing chunk size by adding code splitting
+  - Increasing Vercel plan memory limits
+- **Vite configuration issues**: Check `vite.config.js` for any environment-specific settings that might fail in production
 
 ### API Requests Fail in Production
 - Verify `VITE_API_URL` is set in Vercel environment variables
