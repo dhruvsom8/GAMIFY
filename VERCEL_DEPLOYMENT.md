@@ -113,6 +113,16 @@ If you see errors during the `npm install` phase:
   3. Set **Install Command** to `npm install` (no `cd frontend &&`)
   4. Save changes and redeploy
 
+- **"Permission denied" error on vite binary**: This happens when node_modules was created on Windows and deployed to Linux (Vercel). Fix by:
+  ```bash
+  cd frontend
+  rm package-lock.json
+  npm install
+  git add package-lock.json
+  git commit -m "Regenerate package-lock.json for Vercel"
+  ```
+  This regenerates the lockfile so Vercel does a fresh install on Linux with proper permissions.
+
 - **Node version mismatch**: The `.nvmrc` file now specifies Node 22 LTS. Ensure Vercel is using this version.
 - **Lockfile conflicts**: If you've recently updated dependencies, regenerate the lockfile:
   ```bash
